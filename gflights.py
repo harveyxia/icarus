@@ -3,7 +3,10 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 
+start = time.time()
+
 driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
+driver = webdriver.PhantomJS(executable_path='/cygdrive/c/Python27/Scripts/phantomjs.exe')
 
 driver.get('https://www.google.com/flights/#search;f=BOS;t=CIA,FCO;d=2014-07-02;r=2014-07-06;mc=p')
 
@@ -32,6 +35,8 @@ for child in children:
         time.sleep(1)
     hov.perform()
     print('Data: ' + driver.find_element_by_class_name('GLVBGF1IXC').text + ' ' + driver.find_element_by_class_name('GLVBGF1JXC').text)
+
+print("It took %s seconds" % (time.time() - start))
 
 # try:
 #     elem = driver.find_element_by_class_name('doesnt exist')
