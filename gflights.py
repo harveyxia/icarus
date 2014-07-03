@@ -19,7 +19,7 @@ def main(f, t):
     graph = wait_for_load(driver, GRAPH_PATH, 10)
     # select next button
     next =  graph.find_elements_by_xpath('../*')[5]
-    for x in range(6):
+    for x in range(6):      # TODO: smarter loop than simple 6 iterations
         get_prices(graph, prices, f, t)
         next.click()
         next.click()
