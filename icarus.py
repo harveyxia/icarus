@@ -5,7 +5,15 @@ from pprint import pprint
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 
-driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
+
+#################### MongoDB ####################
+from pymongo import MongoClient
+client = MongoClient('localhost', 27017)
+db = client['icarus']
+collection = db.prices
+
+# driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
+driver = webdriver.Chrome(executable_path='drivers/chromedriver')
 # driver = webdriver.PhantomJS(executable_path='/cygdrive/c/Python27/Scripts/phantomjs.exe')
 
 GRAPH_PATH = '(//tbody)[2]/tr/td[2]/div/div[1]/div[4]/div[3]/div[2]/div[1]/div[2]'
@@ -24,6 +32,8 @@ def main(f, t):
         next.click()
         next.click()
         graph = wait_for_load(driver, GRAPH_PATH, 10)
+
+    collection.insert({ "name": f + '_' + t , "prices": prices })
 
     pprint(prices)
     print("It took %s seconds" % (time.time() - start))
@@ -63,7 +73,7 @@ def get_prices(graph, prices, f, t):
         while date(graph) == 'Loading...':
             time.sleep(0.5)
             hov.perform()
-        if date(graph) not in prices:
+        if date(graph) != "No results found." and date(graph) not in prices:
             prices[date(graph)] = price(graph)
         # print('Data: ' + date(graph) + ' ' + price(graph))
 
