@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 import icarus
 
@@ -24,4 +25,6 @@ def index():
     prices = icarus.main(f, t, days)
     return render_template('index.html', prices = prices)
 
-app.run(debug = True)
+if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug = True, port=port)
