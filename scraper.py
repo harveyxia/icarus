@@ -12,7 +12,8 @@ driver = 0
 def init():
     global driver
     if 'DYNO' in os.environ:
-        driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
+        # driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
+        driver = webdriver.PhantomJS(executable_path='bin/chromedriver')
     else:
         # driver = webdriver.Chrome(executable_path='drivers/chromedriver')
         driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
