@@ -1,3 +1,4 @@
+import os
 from pymongo import MongoClient
 
 client = None
@@ -9,7 +10,8 @@ def init():
     global db
     global collection
     
-    client = MongoClient('localhost', 27017)
+    mongo_url = os.environ.get('MONGOHQ_URL', 'localhost:27017')
+    client = MongoClient(mongo_url)
     db = client['icarus']
     collection = db.prices
 
