@@ -1,3 +1,4 @@
+import os
 import time
 from datetime import datetime, timedelta
 from pprint import pprint
@@ -10,10 +11,13 @@ driver = 0
 
 def init():
     global driver
-    # driver = webdriver.Chrome(executable_path='drivers/chromedriver')
-    driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
-    # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
-    # driver = webdriver.PhantomJS(executable_path='/cygdrive/c/Python27/Scripts/phantomjs.exe')
+    if 'DYNO' in os.environ:
+        driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
+    else:
+        # driver = webdriver.Chrome(executable_path='drivers/chromedriver')
+        driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
+        # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
+        # driver = webdriver.PhantomJS(executable_path='/cygdrive/c/Python27/Scripts/phantomjs.exe')
 
 
 def fetch_all_prices(f, t, days):
