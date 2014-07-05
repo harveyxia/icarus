@@ -10,7 +10,8 @@ driver = 0
 
 def init():
     global driver
-    driver = webdriver.Chrome(executable_path='drivers/chromedriver')
+    # driver = webdriver.Chrome(executable_path='drivers/chromedriver')
+    driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
     # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
     # driver = webdriver.PhantomJS(executable_path='/cygdrive/c/Python27/Scripts/phantomjs.exe')
 
