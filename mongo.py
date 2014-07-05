@@ -10,9 +10,13 @@ def init():
     global db
     global collection
     
-    mongo_url = os.environ.get('MONGOHQ_URL', 'localhost:27017')
-    client = MongoClient(mongo_url)
-    db = client['icarus']
+    if os.environ.get('MONGOHQ_URL'):
+        client = MongoClient(os.environ.get('MONGOHQ_URL'))
+        db = client['app27112589']
+    else:
+        client = MongoClient('localhost:27017')
+        db = client['icarus']
+        
     collection = db.prices
 
 #### Mongo DB config command (unique index)
