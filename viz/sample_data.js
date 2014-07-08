@@ -1,4 +1,4 @@
-{
+var data = {
   "Fri, Apr 10 - Mon, Apr 20": "$985",
   "Fri, Apr 17 - Mon, Apr 27": "$875",
   "Fri, Apr 24 - Mon, May 4": "$847",
