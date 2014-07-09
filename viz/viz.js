@@ -12,40 +12,48 @@ $(function() {
         },
         xAxis: {
             type: 'datetime',
-            // labels: {
-            //     formatter: function()
-            // }
+            title: {
+                text: 'Flights',
+                style: { fontWeight: 'bold', fontSize: '16px' }
+            }
         },
         yAxis: {
             title: {
-                text: 'Price'
+                text: 'Price',
+                style: { fontWeight: 'bold', fontSize: '16px' }
+            },
+            labels: {
+                formatter: function() { return '$' + this.value; }
             }
+        },
+        tooltip: {
+            valuePrefix: '$',
+            shared: true
+            // formatter: function() {
+            //     var date = new Date(Date(this.x));
+            //     var dateStr = ''
+            //     var tooltip = '<b>' + this.series.name + '</b><br/>' +
+            //                     date + ' ' + this.y
+            //     return tooltip
+            // }
+            // pointFormat: function() { return this.value }
         },
         plotOptions: {
-            area: {
-            //     fillColor: {
-            //         linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-            //         stops: [
-            //                     [0, Highcharts.getOptions().colors[0]],
-            //                     [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-            //                 ]
-            //     }
-            }
         },
         series: [{
-            name: 'BOS to HNL',
-            pointInterval: 24 * 3600 * 1000,
-            pointStart: Date.UTC(2014, 09, 08),
-            data: data1,
-            color: 'red',
-            fillColor: 'rgba(255, 0, 0, 0.4)'
-        }, {
             name: 'BOS to BCN',
             pointInterval: 24 * 3600 * 1000,
             pointStart: Date.UTC(2014, 09, 08),
             data: data2,
             color: 'rgba(124, 181, 236, 1)',
-            fillColor: 'rgba(124, 181, 236, 0.4)'
+            fillColor: 'rgba(124, 181, 236, 0.2)'
+        }, {
+            name: 'BOS to HNL',
+            pointInterval: 24 * 3600 * 1000,
+            pointStart: Date.UTC(2014, 09, 08),
+            data: data1,
+            color: 'red',
+            fillColor: 'rgba(255, 0, 0, 0.2)'
         }]
     }
     $('#container').highcharts(chart);
