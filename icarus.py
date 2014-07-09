@@ -6,16 +6,16 @@ def main(f, t, days):
     name = '_'.join([f,t,str(days)])
 
     if mongo.collection.find({u'name': unicode(name)}).limit(1).count(True):
-        prices = list(mongo.collection.find({u'name': unicode(name)}))[0]
+        data = list(mongo.collection.find({u'name': unicode(name)}))[0]
         mongo.client.disconnect()
-        return prices
+        return data
     else:
         scraper.init()
-        prices = scraper.fetch_all_prices(f, t, days)
-        prices_dict = { "name": name, "prices": prices }
-        mongo.collection.insert(prices_dict)
+        data = scraper.fetch_all_data(f, t, days)
+        data_dict = { "name": name, "data": data }
+        mongo.collection.insert(data_dict)
         exit()
-        return prices_dict
+        return data_dict
 
 # safely exit, release resources
 def exit():
