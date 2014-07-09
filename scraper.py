@@ -15,8 +15,8 @@ def init():
         driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
         # driver = webdriver.PhantomJS(executable_path='bin/chromedriver')
     else:
-        # driver = webdriver.Chrome(executable_path='drivers/chromedriver')
-        driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
+        driver = webdriver.Chrome(executable_path='drivers/chromedriver')
+        # driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
         # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
         # driver = webdriver.PhantomJS(executable_path='/cygdrive/c/Python27/Scripts/phantomjs.exe')
 
@@ -75,11 +75,40 @@ def fetch_prices(graph, prices, f, t):
         while date(graph) == 'Loading...':  ## TODO: add a timeout
             time.sleep(0.5)
             hov.perform()
-        if date(graph) != "No results found." and date(graph) not in prices:
+        if date(graph) != "No results found." and date(graph) not in prices and date(graph) != None:
             prices[date(graph)] = price(graph)
 
 def date(graph):
-    return graph.find_elements_by_xpath('./*[last()-1]/*')[0].get_attribute('innerText')
+    date = graph.find_elements_by_xpath('./*[last()-1]/*')[0].get_attribute('innerText')
+    # print date
+    if date == 'Loading...':
+        return date
+    # elif date != u'' and u'No' not in date:
+    elif len(date) > 19:
+        # print date.split()[1]
+        current_month = datetime.now().month
+        year = datetime.now().year
+        if monthToNum(date.split()[1]) < current_month:
+            year += 1
+
+        return date.split('-')[0] + str(year)
 
 def price(graph):
     return graph.find_elements_by_xpath('./*[last()-1]/*')[1].get_attribute('innerText')
+
+def monthToNum(month):
+    monthNum = {
+                    'Jan' : 1,
+                    'Feb' : 2,
+                    'Mar' : 3,
+                    'Apr' : 4,
+                    'May' : 5,
+                    'Jun' : 6,
+                    'Jul' : 7,
+                    'Aug' : 8,
+                    'Sep' : 9, 
+                    'Oct' : 10,
+                    'Nov' : 11,
+                    'Dec' : 12
+            }
+    return monthNum[month]
