@@ -64,7 +64,7 @@ def fetch_data(graph, data, f, t):
         if date != "No results found." and date not in data and date:
             # multiply unix timestamp by 1000 since highcharts is in ms
             timestamp = get_unix_timestamp(date) * 1000
-            data[unix_timestamp] = get_price(graph)
+            data[timestamp] = get_price(graph)
 
 # processes the data by converting to array and sorting
 def process_data(data):
