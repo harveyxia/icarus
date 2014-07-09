@@ -62,7 +62,8 @@ def fetch_data(graph, data, f, t):
             hov.perform()
             date = get_date(graph)
         if date != "No results found." and date not in data and date:
-            unix_timestamp = get_unix_timestamp(date)
+            # multiply unix timestamp by 1000 since highcharts is in ms
+            timestamp = get_unix_timestamp(date) * 1000
             data[unix_timestamp] = get_price(graph)
 
 # processes the data by converting to array and sorting
@@ -102,9 +103,7 @@ def get_date(graph):
     date = graph.find_elements_by_xpath('./*[last()-1]/*')[0].get_attribute('innerText')
     if date == 'Loading...':
         return date
-    # elif date != u'' and u'No' not in date:
     elif len(date) > 19:
-        # print date.split()[1]
         current_month = datetime.now().month
         year = datetime.now().year
         if monthToNum(date.split()[1]) < current_month:
