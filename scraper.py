@@ -1,9 +1,14 @@
-import os
-import time
-from datetime import datetime, timedelta
+# libraries
 from pprint import pprint
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+
+# native dependencies
+import os
+import time
+from datetime import datetime, timedelta
+import calendar
+import re
 
 GRAPH_PATH = '(//tbody)[2]/tr/td[2]/div/div[1]/div[4]/div[3]/div[2]/div[1]/div[2]'
 
@@ -15,18 +20,17 @@ def init():
         driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
         # driver = webdriver.PhantomJS(executable_path='bin/chromedriver')
     else:
-        driver = webdriver.Chrome(executable_path='drivers/chromedriver')
+        # driver = webdriver.Chrome(executable_path='drivers/chromedriver')
         # driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
-        # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
+        driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
         # driver = webdriver.PhantomJS(executable_path='/cygdrive/c/Python27/Scripts/phantomjs.exe')
 
-
-def fetch_all_prices(f, t, days):
+def fetch_all_data(f, t, days):
     current_date = time.strftime('%Y-%m-%d')
     future_date = (datetime.today() + timedelta(days=days)).strftime('%Y-%m-%d')
 
     start = time.time()
-    prices = {}
+    data = {}
     url = build_url(f, t, current_date, future_date)
     driver.get(url)
 
@@ -34,15 +38,43 @@ def fetch_all_prices(f, t, days):
     next =  graph.find_elements_by_xpath('../*')[5]     # select next button
 
     for x in range(6):      # TODO: smarter loop than simple 6 iterations
-        fetch_prices(graph, prices, f, t)
+        fetch_data(graph, data, f, t)
         next.click()
         next.click()
         graph = wait_for_load(driver, GRAPH_PATH, 10)
 
-    pprint(prices)
+    data = process_data(data)
+    pprint(data)
     print("It took %s seconds" % (time.time() - start))
 
-    return prices
+    return data
+
+# Args: f=place from, t=place to
+def fetch_data(graph, data, f, t):
+    bars = graph.find_elements_by_xpath('./*')
+
+    for bar in bars:
+        hov = ActionChains(driver).move_to_element(bar)
+        hov.perform()
+        date = get_date(graph)
+        while date == 'Loading...':  ## TODO: add a timeout
+            time.sleep(0.5)
+            hov.perform()
+            date = get_date(graph)
+        if date != "No results found." and date not in data and date:
+            unix_timestamp = get_unix_timestamp(date)
+            data[unix_timestamp] = get_price(graph)
+
+# processes the data by converting to array and sorting
+def process_data(data):
+    processed_data = []
+    for time in data:
+        processed_data.append([time, data[time]])
+    # by default sorts according to processed_data[i][0] ascending
+    processed_data.sort()
+
+    return processed_data
+        
 
 # waits for AJAX bar graph to load, given # of tries and .3s delay between each
 def wait_for_load(driver, x_path, tries):
@@ -65,22 +97,9 @@ def build_url(f, t, d, r):
     params = ';'.join(['f=' + f, 't=' + t, 'd=' + d, 'r=' + r])
     return base_url + params + ';mc=p'
 
-# Args: f=place from, t=place to
-def fetch_prices(graph, prices, f, t):
-    bars = graph.find_elements_by_xpath('./*')
-
-    for bar in bars:
-        hov = ActionChains(driver).move_to_element(bar)
-        hov.perform()
-        while date(graph) == 'Loading...':  ## TODO: add a timeout
-            time.sleep(0.5)
-            hov.perform()
-        if date(graph) != "No results found." and date(graph) not in prices and date(graph) != None:
-            prices[date(graph)] = price(graph)
-
-def date(graph):
+# extracts the departure date, adds the year
+def get_date(graph):
     date = graph.find_elements_by_xpath('./*[last()-1]/*')[0].get_attribute('innerText')
-    # print date
     if date == 'Loading...':
         return date
     # elif date != u'' and u'No' not in date:
@@ -93,8 +112,15 @@ def date(graph):
 
         return date.split('-')[0] + str(year)
 
-def price(graph):
-    return graph.find_elements_by_xpath('./*[last()-1]/*')[1].get_attribute('innerText')
+# converts date string from get_date() to unix timestamp
+def get_unix_timestamp(date_str):
+    return calendar.timegm(datetime.strptime(date_str, '%a, %b %d %Y').timetuple())
+
+# converts price string to int
+def get_price(graph):
+    price = graph.find_elements_by_xpath('./*[last()-1]/*')[1].get_attribute('innerText')
+    price = int(re.sub(r'[^0-9]', '', price))
+    return price
 
 def monthToNum(month):
     monthNum = {

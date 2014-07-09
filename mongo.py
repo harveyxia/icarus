@@ -13,9 +13,11 @@ def init():
     if os.environ.get('MONGOHQ_URL'):
         client = MongoClient(os.environ.get('MONGOHQ_URL'))
         db = client['app27112589']
-    else:
-        client = MongoClient('localhost:27017')
-        db = client['icarus']
+    # else:
+    #     client = MongoClient('localhost:27017')
+    #     db = client['icarus']
+    else:   # MongoHQ db
+        client = MongoClient('mongodb://harvey:testing@kahana.mongohq.com:10051/icarus')
         
     collection = db.prices
 
