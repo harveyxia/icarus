@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, abort, jsonify
+from flask import Flask, render_template, request, abort, jsonify, url_for
 from threading import Thread
 import icarus
 
@@ -17,6 +17,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    url_for('static', filename='viz.js')
     # f = request.args['f'] or 'BOS'
     # t = request.args['t'] or 'LAX'
     # days = request.args['days'] or 3
