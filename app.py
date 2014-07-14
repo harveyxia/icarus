@@ -1,6 +1,17 @@
 import os
 from flask import Flask, render_template, request, abort, jsonify
+from threading import Thread
 import icarus
+
+def async(f):
+    def wrapper(*args, **kwargs):
+        thr = Thread(target = f, args = args, kwargs = kwargs)
+        thr.start()
+    return wrapper
+
+@async
+def get_async_data(f, t, days):
+    icarus.main(f, t, days)
 
 app = Flask(__name__)
 
@@ -11,7 +22,7 @@ def index():
     # days = request.args['days'] or 3
     f = 'BOS'
     t = 'LAX'
-    days = 3
+    days = 10
     if ('f' in request.args):
         f = request.args['f']
         print('f: ' + request.args['f'])
@@ -22,7 +33,8 @@ def index():
         days = int(request.args['days'])
         print('days: ' + str(request.args['days']))
 
-    prices = icarus.main(f, t, days)
+    # prices = icarus.main(f, t, days)
+    get_async_data(f, t, days)
     return render_template('index.html', prices = [], name = '_'.join([f, t, str(days)]))
 
 @app.route('/data/<name>.json')

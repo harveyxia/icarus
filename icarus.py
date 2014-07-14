@@ -24,6 +24,8 @@ def find(name):
         print data[u'data']
         mongo.client.disconnect()
         return {'name': data['name'], 'data': data['data']}
+    else:
+        return None
 
 
 # safely exit, release resources

@@ -5,25 +5,39 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script type="text/javascript" src='static/viz.js'></script>
         <title>Icarus</title>
         <!-- <link rel="stylesheet" href="css/style.css"> -->
         <!-- <link rel="author" href="humans.txt"> -->
     </head>
     <body>
-        {% for price in prices['data']: %}
-            <li> {{ price }} </li>
-        {% endfor %}
-        <!-- <script src="js/main.js"></script> -->
+        <h1> Loading... </h1>
+        <div id="container" style="width:100%; height:400px;"></div>
     </body>
     <script type="text/javascript">
-    var name = '{{ name }}'
-        
-        setTimeout(function() {
-            // use global var to clear timer
-            pollTimer = setInterval(function() {
-                pollData(name)
-            }, 5000);
-        }, 30000);
+        var name = '{{ name }}';
+        pollTimer = null;
+
+        function initData(name) {
+            $.ajax({
+                url: '/data/' + name + '.json',
+                success: function(data) {
+                    console.log(data);
+                    clearInterval(pollTimer);
+                    drawViz(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    setTimeout(function() {
+                        // use global var to clear timer
+                        pollTimer = setInterval(function() {
+                            pollData(name)
+                        }, 5000);
+                    }, 30000);
+                }
+            });
+        }
 
         function pollData(name) {
             $.ajax({
@@ -31,11 +45,14 @@
                 success: function(data) {
                     console.log(data);
                     clearInterval(pollTimer);
+                    drawViz(data.data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown);
                 }
             });
         }
+
+        initData(name);
     </script>
 </html>

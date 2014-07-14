@@ -10,15 +10,15 @@ def init():
     global db
     global collection
     
-    if os.environ.get('MONGOHQ_URL'):
-        client = MongoClient(os.environ.get('MONGOHQ_URL'))
-        db = client['app27112589']
+    # if os.environ.get('MONGOHQ_URL'):
+    #     client = MongoClient(os.environ.get('MONGOHQ_URL'))
+    #     db = client['app27112589']
     # else:
     #     client = MongoClient('localhost:27017')
     #     db = client['icarus']
-    else:   # MongoHQ db
-        client = MongoClient('mongodb://harvey:test@kahana.mongohq.com:10051/icarus')
-        db = client['icarus']
+    # else:   # MongoHQ db
+    client = MongoClient('mongodb://harvey:test@kahana.mongohq.com:10051/icarus')
+    db = client['icarus']
         
     collection = db['round_trip']
 
