@@ -17,6 +17,15 @@ def main(f, t, days):
         exit()
         return data_dict
 
+def find(name):
+    mongo.init()
+    if mongo.collection.find({u'name': unicode(name)}).limit(1).count(True):
+        data = list(mongo.collection.find({u'name': unicode(name)}))[0]
+        print data[u'data']
+        mongo.client.disconnect()
+        return {'name': data['name'], 'data': data['data']}
+
+
 # safely exit, release resources
 def exit():
     scraper.driver.quit()

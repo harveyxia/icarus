@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <title>Icarus</title>
         <!-- <link rel="stylesheet" href="css/style.css"> -->
         <!-- <link rel="author" href="humans.txt"> -->
@@ -14,4 +15,27 @@
         {% endfor %}
         <!-- <script src="js/main.js"></script> -->
     </body>
+    <script type="text/javascript">
+    var name = '{{ name }}'
+        
+        setTimeout(function() {
+            // use global var to clear timer
+            pollTimer = setInterval(function() {
+                pollData(name)
+            }, 5000);
+        }, 30000);
+
+        function pollData(name) {
+            $.ajax({
+                url: '/data/' + name + '.json',
+                success: function(data) {
+                    console.log(data);
+                    clearInterval(pollTimer);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+        }
+    </script>
 </html>

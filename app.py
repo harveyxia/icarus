@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort, jsonify
 import icarus
 
 app = Flask(__name__)
@@ -23,7 +23,15 @@ def index():
         print('days: ' + str(request.args['days']))
 
     prices = icarus.main(f, t, days)
-    return render_template('index.html', prices = prices)
+    return render_template('index.html', prices = [], name = '_'.join([f, t, str(days)]))
+
+@app.route('/data/<name>.json')
+def show_data(name):
+    data = icarus.find(name)
+    if data:
+        return jsonify(**data)
+    else:
+        abort(404)
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
