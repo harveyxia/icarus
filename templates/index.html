@@ -9,8 +9,8 @@
         <!-- <link rel="author" href="humans.txt"> -->
     </head>
     <body>
-        {% for key, value in prices['prices'].iteritems() %}
-            <li> {{ key }}: {{ value }} </li>
+        {% for price in prices['data']: %}
+            <li> {{ price }} </li>
         {% endfor %}
         <!-- <script src="js/main.js"></script> -->
     </body>
