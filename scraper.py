@@ -21,9 +21,9 @@ def init():
         print '===============Heroku detected==============='
         # driver = webdriver.PhantomJS(executable_path='bin/chromedriver')
     else:
-        # driver = webdriver.Chrome(executable_path='drivers/chromedriver')
+        driver = webdriver.Chrome(executable_path='drivers/chromedriver')
         # driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
-        driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
+        # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
         # driver = webdriver.PhantomJS(executable_path='/cygdrive/c/Python27/Scripts/phantomjs.exe')
 
 def fetch_all_data(f, t, days):
@@ -40,8 +40,18 @@ def fetch_all_data(f, t, days):
 
     for x in range(6):      # TODO: smarter loop than simple 6 iterations
         fetch_data(graph, data, f, t)
-        next.click()
-        next.click()
+
+        result = None
+        while result is None:
+            try:
+                next.click()
+                next.click()
+                result = 1
+            except:
+                print 'Sleeping for click...'
+                pass
+            time.sleep(1)
+
         graph = wait_for_load(driver, GRAPH_PATH, 10)
 
     data = process_data(data)

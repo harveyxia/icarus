@@ -48,7 +48,7 @@
                         console.log(data);
                         console.log('drawing viz');
                         clearInterval(pollTimer);
-                        drawViz(data.data);
+                        drawViz(data);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.log(errorThrown);
