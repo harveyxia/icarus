@@ -16,43 +16,47 @@
         <div id="container" style="width:100%; height:400px;"></div>
     </body>
     <script type="text/javascript">
-        var name = '{{ name }}';
-        pollTimer = null;
+        $(document).ready(function() {
+            var name = '{{ name }}';
+            pollTimer = null;
 
-        function initData(name) {
-            $.ajax({
-                url: '/data/' + name + '.json',
-                success: function(data) {
-                    console.log(data);
-                    clearInterval(pollTimer);
-                    drawViz(data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(errorThrown);
-                    setTimeout(function() {
-                        // use global var to clear timer
-                        pollTimer = setInterval(function() {
-                            pollData(name)
-                        }, 5000);
-                    }, 30000);
-                }
-            });
-        }
+            function initData(name) {
+                $.ajax({
+                    url: '/data/' + name + '.json',
+                    success: function(data) {
+                        console.log(data);
+                        clearInterval(pollTimer);
+                        drawViz(data);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                        setTimeout(function() {
+                            // use global var to clear timer
+                            pollTimer = setInterval(function() {
+                                pollData(name)
+                            }, 5000);
+                        }, 30000);
+                    }
+                });
+            }
 
-        function pollData(name) {
-            $.ajax({
-                url: '/data/' + name + '.json',
-                success: function(data) {
-                    console.log(data);
-                    clearInterval(pollTimer);
-                    drawViz(data.data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(errorThrown);
-                }
-            });
-        }
+            function pollData(name) {
+                $.ajax({
+                    url: '/data/' + name + '.json',
+                    success: function(data) {
+                        myData = data
+                        console.log(data);
+                        console.log('drawing viz');
+                        clearInterval(pollTimer);
+                        drawViz(data);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                });
+            }
 
-        initData(name);
+            initData(name);
+        });
     </script>
 </html>
