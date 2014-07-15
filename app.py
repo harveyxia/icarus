@@ -1,3 +1,7 @@
+# new relic ping
+import newrelic.agent
+newrelic.agent.initialize('newrelic.ini')
+
 import os
 from flask import Flask, render_template, request, abort, jsonify, url_for
 from threading import Thread
