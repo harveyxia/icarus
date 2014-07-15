@@ -49,5 +49,5 @@ function drawViz(data) {
             fillColor: 'rgba(124, 181, 236, 0.2)'
         }]
     }
-    $('#container').highcharts(chart);
+    $('#viz').highcharts(chart);
 }

@@ -1,0 +1,29 @@
+html {
+    /*height: 100%;*/
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+nav {
+    background-color: rgb(51, 51, 51) !important;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ddd !important;
+}
+
+body #container {
+    width: 100%;
+    padding-top: 70px;
+}
+
+body #viz {
+    margin: 0 auto;
+    width: 90%;
+    height: 400px;
+}
