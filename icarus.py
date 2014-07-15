@@ -27,7 +27,6 @@ def find(name):
     else:
         return None
 
-
 # safely exit, release resources
 def exit():
     scraper.driver.quit()

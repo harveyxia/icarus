@@ -21,6 +21,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/scrape')
+def scrape():
     url_for('static', filename='viz.js')
     # f = request.args['f'] or 'BOS'
     # t = request.args['t'] or 'LAX'
@@ -38,9 +42,9 @@ def index():
         days = int(request.args['days'])
         print('days: ' + str(request.args['days']))
 
-    # prices = icarus.main(f, t, days)
-    get_async_data(f, t, days)
-    return render_template('index.html', prices = [], name = '_'.join([f, t, str(days)]))
+    data = icarus.main(f, t, days)
+    return jsonify(**{'name': data['name'], 'data': data['data']})
+    # get_async_data(f, t, days)
 
 @app.route('/data/<name>.json')
 def show_data(name):
