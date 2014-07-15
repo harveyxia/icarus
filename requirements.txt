@@ -7,3 +7,4 @@ pymongo==2.7.1
 selenium==2.42.1
 wsgiref==0.1.2
 yolk==0.4.3
+newrelic==2.22.1.20
