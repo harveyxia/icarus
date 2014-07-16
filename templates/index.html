@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="static/js/jquery-2.1.1.min.js"></script>
+        <script src="static/js/highcharts.js"></script>
         <script type="text/javascript" src='static/js/viz.js'></script>
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
@@ -20,64 +20,32 @@
     </head>
     <body>
         <nav class='ui fixed blue secondary pointing menu'>
-                <div class='active item'>
-                    <a href="#"><i class='large flight basic icon'></i>Flights</a>
-                </div>
-                <div class='item'>
-                    <a href="#"><i class='large user basic icon'></i>Account</a>
-                </div>
-
+            <div class='active item'>
+                <a href="#"><i class='large home basic icon'></i>Flights</a>
+            </div>
+            <div class='item'>
+                <a href="#"><i class='large user basic icon'></i>Account</a>
+            </div>
         </nav>
         
         <div id="container" class='ui grid'>
-            <div id='viz'>
-                
+            <div id='viz'></div>
+        </div>
+        <div id='add-flight-form'>
+            <div class='ui form fluid margin'>
+                <div class='three fields'>
+                    <div class="ui input four wide field">
+                        <input type="text" placeholder="Origin" name='origin'>
+                    </div>
+                    <div class="ui input four wide field">
+                        <input type="text" placeholder="Destination" name='destination'>
+                    </div>
+                    <div class="ui input four wide field">
+                        <input type="text" placeholder="Days" name='days'>
+                    </div>
+                    <div class="ui blue button" id='add-flight'>Add Flight</div>
+                </div>
             </div>
         </div>
     </body>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var name = '{{ name }}';
-            pollTimer = null;
-
-            function initData(name) {
-                $.ajax({
-                    url: '/data/' + name + '.json',
-                    success: function(data) {
-                        console.log(data);
-                        clearInterval(pollTimer);
-                        drawViz(data);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(errorThrown);
-                        setTimeout(function() {
-                            // use global var to clear timer
-                            pollTimer = setInterval(function() {
-                                pollData(name)
-                            }, 5000);
-                        }, 30000);
-                    }
-                });
-            }
-
-            function pollData(name) {
-                $.ajax({
-                    url: '/data/' + name + '.json',
-                    success: function(data) {
-                        myData = data
-                        console.log(data);
-                        console.log('drawing viz');
-                        clearInterval(pollTimer);
-                        drawViz(data);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(errorThrown);
-                    }
-                });
-            }
-
-            // initData(name);
-            drawViz();
-        });
-    </script>
 </html>

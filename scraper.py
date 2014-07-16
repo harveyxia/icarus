@@ -25,6 +25,7 @@ def init():
         # driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
         # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
         # driver = webdriver.PhantomJS(executable_path='/cygdrive/c/Python27/Scripts/phantomjs.exe')
+        driver.set_window_size(1024, 768)
 
 def fetch_all_data(f, t, days):
     current_date = time.strftime('%Y-%m-%d')
@@ -39,8 +40,14 @@ def fetch_all_data(f, t, days):
     next =  graph.find_elements_by_xpath('../*')[5]     # select next button
 
     for x in range(6):      # TODO: smarter loop than simple 6 iterations
+        print 'Scraping loop' + str(x)
         fetch_data(graph, data, f, t)
-
+        # next.click()
+        # next.click()
+        # Scroll to next button, to avoid unclickable error
+        next_x = next.location['x']
+        next_y = next.location['y']
+        driver.execute_script("window.scrollTo(" + str(next_x) + "," + str(next_y) + ")")
         result = None
         while result is None:
             try:
@@ -50,7 +57,7 @@ def fetch_all_data(f, t, days):
             except:
                 print 'Sleeping for click...'
                 pass
-            time.sleep(1)
+                time.sleep(1)
 
         graph = wait_for_load(driver, GRAPH_PATH, 10)
 
@@ -76,6 +83,8 @@ def fetch_data(graph, data, f, t):
             # multiply unix timestamp by 1000 since highcharts is in ms
             timestamp = get_unix_timestamp(date) * 1000
             data[timestamp] = get_price(graph)
+
+            print 'Scraped: ' + str(timestamp) + ' ' + str(date)
 
 # processes the data by converting to array and sorting
 def process_data(data):
