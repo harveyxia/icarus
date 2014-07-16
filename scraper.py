@@ -12,7 +12,7 @@ import re
 
 GRAPH_PATH = '(//tbody)[2]/tr/td[2]/div/div[1]/div[4]/div[3]/div[2]/div[1]/div[2]'
 
-driver = 0
+driver = None
 
 def init():
     global driver
@@ -21,11 +21,7 @@ def init():
         print '===============Heroku detected==============='
         # driver = webdriver.PhantomJS(executable_path='bin/chromedriver')
     else:
-        driver = webdriver.Chrome(executable_path='drivers/chromedriver')
-        # driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
-        # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
-        # driver = webdriver.PhantomJS(executable_path='/cygdrive/c/Python27/Scripts/phantomjs.exe')
-        driver.set_window_size(1024, 768)
+        driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
 
 def fetch_all_data(f, t, days):
     current_date = time.strftime('%Y-%m-%d')
@@ -42,19 +38,20 @@ def fetch_all_data(f, t, days):
     for x in range(6):      # TODO: smarter loop than simple 6 iterations
         print 'Scraping loop' + str(x)
         fetch_data(graph, data, f, t)
-        # next.click()
-        # next.click()
-        # Scroll to next button, to avoid unclickable error
-        next_x = next.location['x']
-        next_y = next.location['y']
-        driver.execute_script("window.scrollTo(" + str(next_x) + "," + str(next_y) + ")")
+        
+        # Scroll to next button and mouse move to clear tooltip
+        driver.execute_script("window.scrollTo("
+            + str(next.location['x']) + "," + str(next.location['y']) + ")")
         result = None
         while result is None:
             try:
+                move = ActionChains(driver).move_by_offset(100,100)
+                move.perform()
                 next.click()
                 next.click()
                 result = 1
             except:
+                ActionChains(driver).move_by_offset(5,5)
                 print 'Sleeping for click...'
                 pass
                 time.sleep(1)
@@ -74,11 +71,19 @@ def fetch_data(graph, data, f, t):
     for bar in bars:
         hov = ActionChains(driver).move_to_element(bar)
         hov.perform()
+
         date = get_date(graph)
+        timeout = 20
         while date == 'Loading...':  ## TODO: add a timeout
-            time.sleep(0.5)
-            hov.perform()
-            date = get_date(graph)
+            if timeout <= 0:
+                return
+            else:
+                time.sleep(0.5)
+                timeout -= 1
+                print 'Waiting for bars to load...'
+                hov.perform()
+                date = get_date(graph)
+                
         if date != "No results found." and date not in data and date:
             # multiply unix timestamp by 1000 since highcharts is in ms
             timestamp = get_unix_timestamp(date) * 1000
