@@ -17,11 +17,13 @@ driver = None
 def init():
     global driver
     if 'DYNO' in os.environ:
-        driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
         print '===============Heroku detected==============='
-        # driver = webdriver.PhantomJS(executable_path='bin/chromedriver')
+        # driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
+        driver = webdriver.PhantomJS(executable_path='bin/chromedriver')
     else:
-        driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
+        # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
+        driver = webdriver.Chrome(executable_path='drivers/chromedriver')
+        # driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
 
 def fetch_all_data(f, t, days):
     current_date = time.strftime('%Y-%m-%d')
