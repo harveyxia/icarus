@@ -7,7 +7,7 @@ var chart = {
         enabled: false
     },
     title: {
-        text: 'BOS, Roundtrip, 10 Days'
+        text: 'Flight Prices'
     },
     xAxis: {
         type: 'datetime',
