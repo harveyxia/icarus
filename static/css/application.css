@@ -35,16 +35,36 @@ body #viz {
     margin-left: 30px;
 }
 
+.center {
+    margin: 0 auto;
+}
+
 #add-flight-form {
     width: 800px;
-    margin: 0 auto;
 }
 
 .hidden {
     display: none;
 }
 
+#loading-bar-container {
+    position: relative;
+}
+
 #loading-bar {
     -webkit-transition: none;
     transition: none;
+}
+
+#loading-bar-container > span {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 5px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    /* vertical-align: middle; */
+    color: gray;
 }

@@ -31,7 +31,7 @@
         <div id="container" class='ui grid'>
             <div id='viz'></div>
         </div>
-        <div id='add-flight-form'>
+        <div id='add-flight-form' class='center'>
             <div class='ui form fluid margin'>
                 <div class='three fields'>
                     <div class="ui input four wide field">
@@ -46,8 +46,9 @@
                     <button tabindex="1" class="ui blue button" id='add-flight'>Add Flight</button>
                 </div>
             </div>
-            <div class="ui blue striped progress hidden" id='loading-bar-container'>
-              <div class="bar" id='loading-bar'></div>
+            <div class="ui blue active striped progress hidden" id='loading-bar-container'>
+                <span class='center'>scraping data</span>
+                <div class="bar" id='loading-bar'></div>
             </div>
         </div>
     </body>

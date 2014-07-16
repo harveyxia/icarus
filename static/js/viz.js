@@ -60,13 +60,22 @@ function drawViz(data) {
             pointInterval: 24 * 3600 * 1000,
             pointStart: Date.UTC(2014, 09, 08),
             data: data.data,
-            color: 'rgba(124, 181, 236, 1)',
-            fillColor: 'rgba(124, 181, 236, 0.2)'
+            color: colorBrewer[seriesNum],
+            fillColor: colorBrewer[seriesNum].substr(0, colorBrewer[seriesNum].length-4) + ',0.2)'
         });
     }
-    
+    console.log(colorBrewer[seriesNum].substr(0, colorBrewer[seriesNum].length-4) + ',0.2)');
+    seriesNum += 1;
     $('#viz').highcharts(chart);
 }
+
+// 12 colors for different series
+var colorBrewer = ["rgba(141,211,199, 1)",
+                   "rgba(141,211,199, 1)","rgba(209,209,179, 1)","rgba(190,186,218, 1)",
+                   "rgba(251,128,114, 1)","rgba(128,177,211, 1)","rgba(253,180,98, 1)",
+                   "rgba(179,222,105, 1)","rgba(252,205,229, 1)","rgba(217,217,217, 1)",
+                   "rgba(188,128,189, 1)","rgba(204,235,197, 1)","rgba(255,237,111, 1)"]
+var seriesNum = 0;
 
 $(document).ready(function() {
     // var name = '{{ name }}';
@@ -110,7 +119,10 @@ $(document).ready(function() {
         var f = $("input[name='origin']").val();
         var t = $("input[name='destination']").val();
         var days = $("input[name='days']").val();
+
+        $('#loading-bar-container > span').text('scraping flight ' + f + ' to ' + t + ' for ' + days + ' days')
         $('#loading-bar-container').slideDown();
+        // $('#loading-bar').width('100%');
         $('#loading-bar').animate({width: '100%'}, 60000);
         $.ajax({
             url: '/scrape?f=' + f + '&t=' + t + '&days=' + days,
