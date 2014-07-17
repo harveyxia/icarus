@@ -18,8 +18,8 @@ def init():
     global driver
     if 'DYNO' in os.environ:
         print '===============Heroku detected==============='
-        # driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
-        driver = webdriver.Chrome(executable_path='bin/chromedriver')
+        driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
+        # driver = webdriver.Chrome(executable_path='bin/chromedriver')
     else:
         # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
         driver = webdriver.Chrome(executable_path='drivers/chromedriver')
