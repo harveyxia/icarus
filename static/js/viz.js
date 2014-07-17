@@ -128,15 +128,18 @@ $(document).ready(function() {
         $('#loading-bar').animate({width: '100%'}, 60000);
         $.ajax({
             url: '/scrape?f=' + f + '&t=' + t + '&days=' + days,
-            success: function(name) {
-                console.log(name);
-                setTimeout(function() {
-                    // use global var to clear timer
-                    pollTimer = setInterval(function() {
-                        pollData(name)
-                    }, 5000);
-                }, 30000);
-                // drawViz(data);
+            success: function(data) {
+                console.log(data);
+                if (typeof data === 'object') {
+                    drawViz(data);
+                } else {
+                    setTimeout(function() {
+                        // use global var to clear timer
+                        pollTimer = setInterval(function() {
+                            pollData(data);
+                        }, 5000);
+                    }, 30000);
+                }
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
