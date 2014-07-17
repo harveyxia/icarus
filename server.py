@@ -33,8 +33,8 @@ def scrape():
     url_for('static', filename='viz.js')
     
     f = request.args.get('f', '')
-    f = request.args.get('t', '')
-    f = request.args.get('days', 0)
+    t = request.args.get('t', '')
+    days = request.args.get('days', 0)
 
     # if ('f' in request.args):
     #     f = request.args['f']
