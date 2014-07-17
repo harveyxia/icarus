@@ -42,8 +42,9 @@ def scrape():
         days = int(request.args['days'])
         print('days: ' + str(request.args['days']))
 
-    data = icarus.main(f, t, days)
-    return jsonify(**{'name': data['name'], 'data': data['data']})
+    get_async_data(f, t, days)
+    return '_'.join([f,t,str(days)])
+    # return jsonify(**{'name': data['name'], 'data': data['data']})
     # get_async_data(f, t, days)
 
 @app.route('/data/<name>.json')

@@ -101,19 +101,21 @@ $(document).ready(function() {
     //     });
     // }
 
-    // function pollData(name) {
-    //     $.ajax({
-    //         url: '/data/' + name + '.json',
-    //         success: function(data) {
-    //             console.log(data);
-    //             clearInterval(pollTimer);
-    //             drawViz(data);
-    //         },
-    //         error: function(jqXHR, textStatus, errorThrown) {
-    //             console.log(errorThrown);
-    //         }
-    //     });
-    // }
+    function pollData(name) {
+        $.ajax({
+            url: '/data/' + name + '.json',
+            success: function(data) {
+                console.log(data);
+                clearInterval(pollTimer);
+                $('#loading-bar').width(0);
+                $('#loading-bar-container').slideUp();
+                drawViz(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    }
 
     $('#add-flight').click(function() {
         var f = $("input[name='origin']").val();
@@ -126,11 +128,15 @@ $(document).ready(function() {
         $('#loading-bar').animate({width: '100%'}, 60000);
         $.ajax({
             url: '/scrape?f=' + f + '&t=' + t + '&days=' + days,
-            success: function(data) {
-                console.log(data);
-                $('#loading-bar').width(0);
-                $('#loading-bar-container').slideUp();
-                drawViz(data);
+            success: function(name) {
+                console.log(name);
+                setTimeout(function() {
+                    // use global var to clear timer
+                    pollTimer = setInterval(function() {
+                        pollData(name)
+                    }, 5000);
+                }, 30000);
+                // drawViz(data);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
