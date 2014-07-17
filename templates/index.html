@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="static/js/jquery-2.1.1.min.js"></script>
         <script src="static/js/highcharts.js"></script>
+        <script src="static/js/jquery.autocomplete.js"></script>
         <script type="text/javascript" src='static/js/viz.js'></script>
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
@@ -49,6 +50,10 @@
             <div class="ui blue active striped progress hidden" id='loading-bar-container'>
                 <span class='center'>scraping data</span>
                 <div class="bar" id='loading-bar'></div>
+            </div>
+
+            <div>
+                <input type='text' name='q' class='ac'>
             </div>
         </div>
     </body>

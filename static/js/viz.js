@@ -137,6 +137,16 @@ $(document).ready(function() {
                         pollTimer = setInterval(function() {
                             pollData(data);
                         }, 5000);
+                        // error timeout after 1.5 min
+                        setTimeout(function() {
+                            clearInterval(pollTimer);
+                            $('#loading-bar-container > span').text(
+                                'An error occurred while scraping :( Try again.');
+                            setTimeout(function() {
+                                $('#loading-bar').width(0);
+                                $('#loading-bar-container').slideUp();
+                            }, 5000);
+                        }, 90000);
                     }, 30000);
                 }
             },
@@ -144,6 +154,19 @@ $(document).ready(function() {
                 console.log(errorThrown);
             }
         });
+    });
+
+    var ac = $('.ac').autocomplete({
+        serviceUrl: '/ac',
+        
+        deferRequestBy: 200,
+        paramName: 'q',
+        onSelect: function(suggestion) {
+            $(this).val(suggestion.value.substr(0,3));
+        },
+        onSearchStart: function(query) {
+            query.q = query.q.toLowerCase();
+        }
     });
     
     // draw empty graph
