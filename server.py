@@ -34,7 +34,7 @@ def scrape():
     
     f = request.args.get('f', '')
     t = request.args.get('t', '')
-    days = request.args.get('days', 0)
+    days = int(request.args.get('days', 0))
 
     # if ('f' in request.args):
     #     f = request.args['f']
