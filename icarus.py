@@ -12,10 +12,14 @@ def main(f, t, days):
     else:
         scraper.init()
         data = scraper.fetch_all_data(f, t, days)
-        data_dict = { "name": name, "data": data }
-        mongo.collection.insert(data_dict)
-        exit()
-        return data_dict
+        if data is not None:
+            data_dict = { "name": name, "data": data }
+            mongo.collection.insert(data_dict)
+            exit()
+            return data_dict
+        else:
+            exit()
+            return None
 
 def find(name):
     mongo.init()

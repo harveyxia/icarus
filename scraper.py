@@ -20,8 +20,9 @@ def init():
         print '===============Heroku detected==============='
         driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
         # driver = webdriver.Chrome(executable_path='bin/chromedriver')
+    elif os.environ['OS'] == 'Windows_NT':
+        driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
     else:
-        # driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
         driver = webdriver.Chrome(executable_path='drivers/chromedriver')
         # driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
 
@@ -34,16 +35,12 @@ def fetch_all_data(f, t, days):
     url = build_url(f, t, current_date, future_date)
     driver.get(url)
 
-    graph = wait_for_load(driver, GRAPH_PATH, 10)       # select bar graph div
-
-    result = None
-    while result is None:
-        try:
-            next =  graph.find_elements_by_xpath('../*')[5]     # select next button
-            result = 1
-        except:
-            time.sleep(1)
-            next =  graph.find_elements_by_xpath('../*')[5]
+    graph = wait_for_load(driver, GRAPH_PATH)       # select bar graph div
+    next =  wait_for_load(graph, '../*', plural=True, index=5)     # select next button
+    
+    # return None indicating scraper error
+    if next is None:
+        return None
 
     for x in range(6):      # TODO: smarter loop than simple 6 iterations
         print 'Scraping loop' + str(x)
@@ -113,19 +110,23 @@ def process_data(data):
         
 
 # waits for AJAX bar graph to load, given # of tries and .3s delay between each
-def wait_for_load(driver, x_path, tries):
-    while tries:
+def wait_for_load(root, x_path, plural=False, tries=30, sleep=0.5, index=0):
+    while tries > 0:
         try:
-            parent =  driver.find_element_by_xpath(x_path)
+            if plural:
+                elem = root.find_elements_by_xpath(x_path)[index]
+            else:
+                elem = root.find_element_by_xpath(x_path)
             print 'finding graph'
-            print parent
-            if parent.is_displayed():
-                return parent
+            print elem
+            if elem.is_displayed():
+                return elem
         except:
-            if tries <= 0:
-                raise
-        tries -= 1
-        time.sleep(0.3)
+            pass
+            print 'pass sleeping'
+            tries -= 1
+            time.sleep(sleep)
+    return None
 
 # Example: f=BOS, t=LAX, d=2014-07-02, r=2014-07-06
 # URI component: f=BOS;t=CIA,FCO;d=2014-07-02;r=2014-07-06;mc=p
