@@ -122,19 +122,16 @@ $(document).ready(function() {
         var t = $("input[name='destination']").val();
         var days = $("input[name='days']").val();
 
-        $('#loading-bar-container > span').text('scraping flight ' + f + ' to ' + t + ' for ' + days + ' days')
-        $('#loading-bar-container').slideDown();
-        // $('#loading-bar').width('100%');
-        $('#loading-bar').animate({width: '100%'}, 60000);
         $.ajax({
             url: '/scrape?f=' + f + '&t=' + t + '&days=' + days,
             success: function(data) {
                 console.log(data);
                 if (typeof data === 'object') {
-                    $('#loading-bar').width(0);
-                    $('#loading-bar-container').slideUp();
                     drawViz(data);
                 } else {
+                    $('#loading-bar-container > span').text('scraping flight ' + f + ' to ' + t + ' for ' + days + ' days')
+                    $('#loading-bar-container').slideDown();
+                    $('#loading-bar').animate({width: '100%'}, 60000);
                     setTimeout(function() {
                         // use global var to clear timer
                         pollTimer = setInterval(function() {
