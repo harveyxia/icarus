@@ -109,6 +109,8 @@ def wait_for_load(driver, x_path, tries):
     while tries:
         try:
             parent =  driver.find_element_by_xpath(x_path)
+            print 'finding graph'
+            print parent
             if parent.is_displayed():
                 return parent
         except:
