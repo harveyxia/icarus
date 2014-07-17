@@ -35,7 +35,15 @@ def fetch_all_data(f, t, days):
     driver.get(url)
 
     graph = wait_for_load(driver, GRAPH_PATH, 10)       # select bar graph div
-    next =  graph.find_elements_by_xpath('../*')[5]     # select next button
+
+    result = None
+    while result is None:
+        try:
+            next =  graph.find_elements_by_xpath('../*')[5]     # select next button
+            result = 1
+        except:
+            time.sleep(1)
+            next =  graph.find_elements_by_xpath('../*')[5]
 
     for x in range(6):      # TODO: smarter loop than simple 6 iterations
         print 'Scraping loop' + str(x)
