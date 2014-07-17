@@ -20,7 +20,7 @@ def init():
         print '===============Heroku detected==============='
         driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
         # driver = webdriver.Chrome(executable_path='bin/chromedriver')
-    elif os.environ['OS'] == 'Windows_NT':
+    elif os.environ.get('OS', '') == 'Windows_NT':
         driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
     else:
         driver = webdriver.Chrome(executable_path='drivers/chromedriver')

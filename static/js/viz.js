@@ -1,7 +1,8 @@
 var chart = {
     chart: {
         zoomType: 'x',
-        type: 'area'
+        type: 'area',
+        spacingRight: 50
     },
     credits: {
         enabled: false
@@ -156,9 +157,9 @@ $(document).ready(function() {
         });
     });
 
+    // enable autocomplete
     var ac = $('.ac').autocomplete({
         serviceUrl: '/ac',
-        
         deferRequestBy: 200,
         paramName: 'q',
         onSelect: function(suggestion) {
@@ -166,8 +167,14 @@ $(document).ready(function() {
         },
         onSearchStart: function(query) {
             query.q = query.q.toLowerCase();
-        }
+        },
+        autoSelectFirst: true
     });
+
+    // $('.ac').blur(function() {
+    //     console.log('lose focus');
+    //     $(this).autocomplete().disable();
+    // })
     
     // draw empty graph
     drawViz();

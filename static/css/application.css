@@ -1,5 +1,5 @@
 html {
-    /*height: 100%;*/
+    /*background-color: #e6eaef;*/
 }
 
 body {
@@ -20,6 +20,7 @@ nav a {
 body #container {
     width: 100%;
     padding-top: 70px;
+    background-color: white;
 }
 
 body #viz {
@@ -28,6 +29,10 @@ body #viz {
     margin-bottom: 50px;
     width: 90%;
     height: 400px;
+}
+
+.highcharts-container {
+    /*border: 1px solid gray;*/
 }
 
 .margin {
@@ -72,3 +77,14 @@ body #viz {
     /* vertical-align: middle; */
     color: gray;
 }
+
+.autocomplete-suggestions {
+    width: 300px !important;
+    font-size: 14px;
+    border: 1px solid #999;
+    background: #FFF;
+    overflow: auto;
+}
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }

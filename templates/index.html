@@ -22,7 +22,7 @@
     <body>
         <nav class='ui fixed blue secondary pointing menu'>
             <div class='active item'>
-                <a href="#"><i class='large home basic icon'></i>Flights</a>
+                <a href="#"><i class='large flight basic icon'></i>Flights</a>
             </div>
             <div class='item'>
                 <a href="#"><i class='large user basic icon'></i>Account</a>
@@ -36,10 +36,10 @@
             <div class='ui form fluid margin'>
                 <div class='three fields'>
                     <div class="ui input four wide field">
-                        <input type="text" placeholder="Origin" name='origin' maxlength='3' tabindex='1'>
+                        <input type="text" placeholder="Origin" name='origin' maxlength='3' tabindex='1' class='ac'>
                     </div>
                     <div class="ui input four wide field">
-                        <input type="text" placeholder="Destination" name='destination' maxlength='3' tabindex='2'>
+                        <input type="text" placeholder="Destination" name='destination' maxlength='3' tabindex='2' class='ac'>
                     </div>
                     <div class="ui input four wide field">
                         <input type="text" placeholder="Days" name='days' tabindex='3'>
@@ -52,9 +52,6 @@
                 <div class="bar" id='loading-bar'></div>
             </div>
 
-            <div>
-                <input type='text' name='q' class='ac'>
-            </div>
         </div>
     </body>
 </html>
