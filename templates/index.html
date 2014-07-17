@@ -35,15 +35,15 @@
             <div class='ui form fluid margin'>
                 <div class='three fields'>
                     <div class="ui input four wide field">
-                        <input type="text" placeholder="Origin" name='origin' maxlength='3'>
+                        <input type="text" placeholder="Origin" name='origin' maxlength='3' tabindex='1'>
                     </div>
                     <div class="ui input four wide field">
-                        <input type="text" placeholder="Destination" name='destination' maxlength='3'>
+                        <input type="text" placeholder="Destination" name='destination' maxlength='3' tabindex='2'>
                     </div>
                     <div class="ui input four wide field">
-                        <input type="text" placeholder="Days" name='days'>
+                        <input type="text" placeholder="Days" name='days' tabindex='3'>
                     </div>
-                    <button tabindex="1" class="ui blue button" id='add-flight'>Add Flight</button>
+                    <button tabindex="4" class="ui blue button focus" id='add-flight'>Add Flight</button>
                 </div>
             </div>
             <div class="ui blue active striped progress hidden" id='loading-bar-container'>

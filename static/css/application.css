@@ -43,6 +43,10 @@ body #viz {
     width: 800px;
 }
 
+.focus:focus {
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
 .hidden {
     display: none;
 }
