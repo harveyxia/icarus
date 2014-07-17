@@ -26,13 +26,9 @@ def index():
 @app.route('/scrape')
 def scrape():
     url_for('static', filename='viz.js')
-    # f = request.args['f'] or 'BOS'
-    # t = request.args['t'] or 'LAX'
-    # days = request.args['days'] or 3
-    f = 'BOS'
-    t = 'LAX'
-    days = 10
-    name = '_'.join([f,t,str(days)])
+    f = ''
+    t = ''
+    days = 0
     if ('f' in request.args):
         f = request.args['f']
         print('f: ' + request.args['f'])
@@ -42,6 +38,8 @@ def scrape():
     if ('days' in request.args):
         days = int(request.args['days'])
         print('days: ' + str(request.args['days']))
+
+    name = '_'.join([f,t,str(days)])
 
     data = icarus.find(name)
     if data:
