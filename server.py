@@ -32,6 +32,7 @@ def scrape():
     f = 'BOS'
     t = 'LAX'
     days = 10
+    name = '_'.join([f,t,str(days)])
     if ('f' in request.args):
         f = request.args['f']
         print('f: ' + request.args['f'])
@@ -42,8 +43,12 @@ def scrape():
         days = int(request.args['days'])
         print('days: ' + str(request.args['days']))
 
-    get_async_data(f, t, days)
-    return '_'.join([f,t,str(days)])
+    data = icarus.find(name)
+    if data:
+        return jsonify(**data)
+    else:
+        get_async_data(f, t, days)
+        return name
     # return jsonify(**{'name': data['name'], 'data': data['data']})
     # get_async_data(f, t, days)
 
