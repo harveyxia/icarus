@@ -131,6 +131,8 @@ $(document).ready(function() {
             success: function(data) {
                 console.log(data);
                 if (typeof data === 'object') {
+                    $('#loading-bar').width(0);
+                    $('#loading-bar-container').slideUp();
                     drawViz(data);
                 } else {
                     setTimeout(function() {
