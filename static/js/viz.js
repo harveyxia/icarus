@@ -54,10 +54,11 @@ var chart = {
 }
 
 function drawViz(data) {
-
+    var name = data.name.split('_');
+    name = name[0] + ' to ' + name[1] + ' for ' + name[2] + ' days';
     if (data) {
         chart.series.push({
-            name: data.name,
+            name: name,
             pointInterval: 24 * 3600 * 1000,
             pointStart: Date.UTC(2014, 09, 08),
             data: data.data,
@@ -108,6 +109,7 @@ $(document).ready(function() {
             success: function(data) {
                 console.log(data);
                 clearInterval(pollTimer);
+                clearTimeout(errorTimeout);
                 $('#loading-bar').width(0);
                 $('#loading-bar-container').slideUp();
                 drawViz(data);
@@ -143,7 +145,8 @@ $(document).ready(function() {
                             clearInterval(pollTimer);
                             $('#loading-bar-container > span').text(
                                 'An error occurred while scraping :( Try again.');
-                            setTimeout(function() {
+                            // use global var to clear timer
+                            errorTimeout = setTimeout(function() {
                                 $('#loading-bar').width(0);
                                 $('#loading-bar-container').slideUp();
                             }, 5000);
