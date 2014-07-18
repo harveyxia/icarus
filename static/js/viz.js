@@ -141,12 +141,12 @@ $(document).ready(function() {
                     $('#loading-bar').animate({width: '100%'}, 60000);
                     setTimeout(function() {
                         // error timeout after 1.5 min
-                        setTimeout(function() {
+                        errorTimeout = setTimeout(function() {
                             clearInterval(pollTimer);
                             $('#loading-bar-container > span').text(
                                 'An error occurred while scraping :( Try again.');
                             // use global var to clear timer
-                            errorTimeout = setTimeout(function() {
+                            setTimeout(function() {
                                 $('#loading-bar').width(0);
                                 $('#loading-bar-container').slideUp();
                             }, 5000);
