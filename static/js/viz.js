@@ -140,10 +140,6 @@ $(document).ready(function() {
                     $('#loading-bar-container').slideDown();
                     $('#loading-bar').animate({width: '100%'}, 60000);
                     setTimeout(function() {
-                        // use global var to clear timer
-                        pollTimer = setInterval(function() {
-                            pollData(data);
-                        }, 5000);
                         // error timeout after 1.5 min
                         setTimeout(function() {
                             clearInterval(pollTimer);
@@ -155,6 +151,11 @@ $(document).ready(function() {
                                 $('#loading-bar-container').slideUp();
                             }, 5000);
                         }, 90000);
+                        // use global var to clear timer
+                        pollTimer = setInterval(function() {
+                            pollData(data);
+                        }, 5000);
+                        
                     }, 30000);
                 }
             },
