@@ -54,8 +54,12 @@ var chart = {
 }
 
 function drawViz(data) {
-    var name = data.name.split('_');
-    name = name[0] + ' to ' + name[1] + ' for ' + name[2] + ' days';
+    var name = '';
+    if (data.name) {
+        name = data.name.split('_');
+        name = name[0] + ' to ' + name[1] + ' for ' + name[2] + ' days';
+    }
+
     if (data) {
         chart.series.push({
             name: name,
