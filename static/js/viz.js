@@ -55,7 +55,7 @@ var chart = {
 
 function drawViz(data) {
     var name = '';
-    if (data.name) {
+    if (data) {
         name = data.name.split('_');
         name = name[0] + ' to ' + name[1] + ' for ' + name[2] + ' days';
     }
