@@ -70,7 +70,6 @@ function drawViz(data) {
             fillColor: colorBrewer[seriesNum].substr(0, colorBrewer[seriesNum].length-4) + ',0.2)'
         });
     }
-    console.log(colorBrewer[seriesNum].substr(0, colorBrewer[seriesNum].length-4) + ',0.2)');
     seriesNum += 1;
     $('#viz').highcharts(chart);
 }
@@ -111,7 +110,7 @@ $(document).ready(function() {
         $.ajax({
             url: '/data/' + name + '.json',
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 clearInterval(pollTimer);
                 clearTimeout(errorTimeout);
                 $('#loading-bar').width(0);
@@ -124,15 +123,11 @@ $(document).ready(function() {
         });
     }
 
-    $('#add-flight').click(function() {
-        var f = $("input[name='origin']").val();
-        var t = $("input[name='destination']").val();
-        var days = $("input[name='days']").val();
-
+    function fetchDataAndDraw(f, t, days) {
         $.ajax({
             url: '/scrape?f=' + f + '&t=' + t + '&days=' + days,
             success: function(data) {
-                console.log(data);
+                // console.log(data);
                 if (typeof data === 'object') {
                     drawViz(data);
                 } else {
@@ -163,6 +158,20 @@ $(document).ready(function() {
                 console.log(errorThrown);
             }
         });
+    }
+
+    $('#show-example').click(function() {
+        fetchDataAndDraw('BOS', 'FCO', 10);
+        fetchDataAndDraw('BOS', 'HNL', 10);
+        $(this).hide();
+    });
+
+    $('#add-flight').click(function() {
+        var f = $("input[name='origin']").val();
+        var t = $("input[name='destination']").val();
+        var days = $("input[name='days']").val();
+
+        fetchDataAndDraw(f, t, days);
     });
 
     // enable autocomplete
