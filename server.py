@@ -1,5 +1,5 @@
 # new relic ping
-import newrelic.agent
+# import newrelic.agent
 import cPickle as pickle
 import os
 from flask import Flask, render_template, request, abort, jsonify, url_for
