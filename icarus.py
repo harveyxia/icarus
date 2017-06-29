@@ -7,7 +7,7 @@ def main(f, t, days):
 
     if mongo.collection.find({u'name': name}).limit(1).count(True):
         data = list(mongo.collection.find({u'name': name}))[0]
-        mongo.client.disconnect()
+        mongo.client.close()
         return data
     else:
         scraper.init()
@@ -26,7 +26,7 @@ def find(name):
     if mongo.collection.find({u'name': name}).limit(1).count(True):
         data = list(mongo.collection.find({u'name': name}))[0]
         print(data[u'data'])
-        mongo.client.disconnect()
+        mongo.client.close()
         return {'name': data['name'], 'data': data['data']}
     else:
         return None
@@ -34,4 +34,4 @@ def find(name):
 # safely exit, release resources
 def exit():
     scraper.driver.quit()
-    mongo.client.disconnect()
+    mongo.client.close()

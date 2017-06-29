@@ -1,13 +1,10 @@
 # new relic ping
 
-import newrelic.agent
 import _pickle as pickle
 import os
 from flask import Flask, render_template, request, abort, jsonify, url_for
 from threading import Thread
 import icarus
-
-newrelic.agent.initialize('newrelic.ini')
 
 # load autocomplete data into memory
 AP_DATA = pickle.load(open('data/airports_data_dict.p', 'rb'))
