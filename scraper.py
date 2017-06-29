@@ -10,7 +10,9 @@ from datetime import datetime, timedelta
 import calendar
 import re
 
-GRAPH_PATH = '(//tbody)[2]/tr/td[2]/div/div[1]/div[4]/div[3]/div[2]/div[1]/div[2]'
+GRAPH_PATH = '/html/body/div[3]/div/div/div[3]/div[2]/div/div[1]/div[2]'
+NEXT_BUTTON_PATH = '/html/body/div[3]/div/div/div[3]/div[2]/div/div[1]/div[6]'
+TOOLTIP_PATH = '/html/body/div[3]/div/div/div[3]/div[2]/div/div[1]/div[2]/div[67]'
 
 driver = None
 
@@ -23,7 +25,7 @@ def init():
     elif os.environ.get('OS', '') == 'Windows_NT':
         driver = webdriver.Chrome(executable_path='/cygdrive/c/Python27/Scripts/chromedriver.exe')
     else:
-        driver = webdriver.Chrome(executable_path='drivers/chromedriver')
+        driver = webdriver.Chrome(executable_path='bin/chromedriver')
         # driver = webdriver.PhantomJS(executable_path='drivers/phantomjs')
 
 def fetch_all_data(f, t, days):
@@ -36,13 +38,13 @@ def fetch_all_data(f, t, days):
     driver.get(url)
 
     graph = wait_for_load(driver, GRAPH_PATH)       # select bar graph div
-    next =  wait_for_load(graph, '../*', plural=True, index=5)     # select next button
+    next =  wait_for_load(driver, NEXT_BUTTON_PATH)     # select next button
     
     # return None indicating scraper error
     if next is None:
         return None
 
-    for x in range(6):      # TODO: smarter loop than simple 6 iterations
+    for x in range(1):      # TODO: smarter loop than simple 6 iterations
         print 'Scraping loop' + str(x)
         fetch_data(graph, data, f, t)
         
@@ -73,7 +75,7 @@ def fetch_all_data(f, t, days):
 
 # Args: f=place from, t=place to
 def fetch_data(graph, data, f, t):
-    bars = graph.find_elements_by_xpath('./*')
+    bars = graph.find_elements_by_xpath('div')[4:] # skip first 4 non data bars
 
     for bar in bars:
         hov = ActionChains(driver).move_to_element(bar)
@@ -138,7 +140,7 @@ def build_url(f, t, d, r):
 
 # extracts the departure date, adds the year
 def get_date(graph):
-    date = graph.find_elements_by_xpath('./*[last()-1]/*')[0].get_attribute('innerText')
+    date = graph.find_elements_by_xpath(TOOLTIP_PATH + "/div")[1].get_attribute('innerText')
     if date == 'Loading...':
         return date
     elif len(date) > 19:
@@ -146,7 +148,7 @@ def get_date(graph):
         year = datetime.now().year
         if monthToNum(date.split()[1]) < current_month:
             year += 1
-
+        print(date.split('-')[0] + str(year))
         return date.split('-')[0] + str(year)
 
 # converts date string from get_date() to unix timestamp
@@ -155,7 +157,7 @@ def get_unix_timestamp(date_str):
 
 # converts price string to int
 def get_price(graph):
-    price = graph.find_elements_by_xpath('./*[last()-1]/*')[1].get_attribute('innerText')
+    price = graph.find_elements_by_xpath(TOOLTIP_PATH + "/div")[2].get_attribute('innerText')
     price = int(re.sub(r'[^0-9]', '', price))
     return price
 
