@@ -1,7 +1,7 @@
 # new relic ping
 
 import newrelic.agent
-import cPickle as pickle
+import _pickle as pickle
 import os
 from flask import Flask, render_template, request, abort, jsonify, url_for
 from threading import Thread
@@ -74,8 +74,8 @@ def autocomplete():
 
     suggestions = filter(lambda k: q in k, AP_SEARCH)
     suggestions = suggestions[:100]
-    print '=========SUGGESTIONS=========='
-    print suggestions
+    print('=========SUGGESTIONS==========')
+    print(suggestions)
     results = []
     for k in suggestions:
         if AP_DATA[k] not in results:

@@ -19,7 +19,7 @@ driver = None
 def init():
     global driver
     if 'DYNO' in os.environ:
-        print '===============Heroku detected==============='
+        print('===============Heroku detected===============')
         driver = webdriver.PhantomJS(executable_path='bin/phantomjs')
         # driver = webdriver.Chrome(executable_path='bin/chromedriver')
     elif os.environ.get('OS', '') == 'Windows_NT':
@@ -45,7 +45,7 @@ def fetch_all_data(f, t, days):
         return None
 
     for x in range(1):      # TODO: smarter loop than simple 6 iterations
-        print 'Scraping loop' + str(x)
+        print('Scraping loop' + str(x))
         fetch_data(graph, data, f, t)
         
         # Scroll to next button and mouse move to clear tooltip
@@ -61,7 +61,7 @@ def fetch_all_data(f, t, days):
                 result = 1
             except:
                 ActionChains(driver).move_by_offset(5,5)
-                print 'Sleeping for click...'
+                print('Sleeping for click...')
                 pass
                 time.sleep(1)
 
@@ -89,7 +89,7 @@ def fetch_data(graph, data, f, t):
             else:
                 time.sleep(0.5)
                 timeout -= 1
-                print 'Waiting for bars to load...'
+                print('Waiting for bars to load...')
                 hov.perform()
                 date = get_date(graph)
                 
@@ -98,7 +98,7 @@ def fetch_data(graph, data, f, t):
             timestamp = get_unix_timestamp(date) * 1000
             data[timestamp] = get_price(graph)
 
-            print 'Scraped: ' + str(timestamp) + ' ' + str(date)
+            print('Scraped: ' + str(timestamp) + ' ' + str(date))
 
 # processes the data by converting to array and sorting
 def process_data(data):
@@ -119,13 +119,13 @@ def wait_for_load(root, x_path, plural=False, tries=30, sleep=0.5, index=0):
                 elem = root.find_elements_by_xpath(x_path)[index]
             else:
                 elem = root.find_element_by_xpath(x_path)
-            print 'finding graph'
-            print elem
+            print('finding graph')
+            print(elem)
             if elem.is_displayed():
                 return elem
         except:
             pass
-            print 'pass sleeping'
+            print('pass sleeping')
             tries -= 1
             time.sleep(sleep)
     return None
