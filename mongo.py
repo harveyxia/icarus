@@ -17,8 +17,8 @@ def init():
     #     client = MongoClient('localhost:27017')
     #     db = client['icarus']
     # else:   # MongoHQ db
-    client = MongoClient('mongodb://harvey:test@ds159220.mlab.com:59220/heroku_gj60ddzp/icarus')
-    db = client['icarus']
+    client = MongoClient('mongodb://harvey:test@ds159220.mlab.com:59220/heroku_gj60ddzp')
+    db = client['heroku_gj60ddzp']
         
     collection = db['round_trip']
 

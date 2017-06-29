@@ -5,8 +5,8 @@ def main(f, t, days):
     mongo.init()
     name = '_'.join([f,t,str(days)])
 
-    if mongo.collection.find({u'name': unicode(name)}).limit(1).count(True):
-        data = list(mongo.collection.find({u'name': unicode(name)}))[0]
+    if mongo.collection.find({u'name': name}).limit(1).count(True):
+        data = list(mongo.collection.find({u'name': name}))[0]
         mongo.client.disconnect()
         return data
     else:
@@ -23,8 +23,8 @@ def main(f, t, days):
 
 def find(name):
     mongo.init()
-    if mongo.collection.find({u'name': unicode(name)}).limit(1).count(True):
-        data = list(mongo.collection.find({u'name': unicode(name)}))[0]
+    if mongo.collection.find({u'name': name}).limit(1).count(True):
+        data = list(mongo.collection.find({u'name': name}))[0]
         print(data[u'data'])
         mongo.client.disconnect()
         return {'name': data['name'], 'data': data['data']}
